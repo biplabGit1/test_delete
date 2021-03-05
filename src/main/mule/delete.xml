@@ -25,7 +25,7 @@ http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/htt
 	</flow>
 	<flow name="deleteFlow2" doc:id="58f27b46-92ef-49e3-9394-8037fad8b2a4" >
 		<http:listener doc:name="Listener" doc:id="547d24ae-7784-443c-8f3e-708e6f3a452d" config-ref="HTTP_Listener_config" path="error2"/>
-		<logger level="INFO" doc:name="Logger" doc:id="ff027f8e-637e-41bc-9160-9da34b0a0f90" message="#['test error' +++ now()]"/>
+		<logger level="INFO" doc:name="Logger" doc:id="ff027f8e-637e-41bc-9160-9da34b0a0f90" message="#['test error' ++ now()]"/>
 		<error-handler >
 			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="78689ea2-787f-4077-95d5-4892a8e7c956" >
 				<set-payload value="#['on error continue']" doc:name="Set Payload" doc:id="77df4a66-38da-4093-ac5c-06cd718ff246" />
