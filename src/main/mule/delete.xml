@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="252cfc1f-7472-4525-80ae-5c8a9532467b" basePath="/" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="deleteFlow" doc:id="6c4f472e-0809-47fb-9b69-ad7979a73793" >
+		<http:listener doc:name="Listener" doc:id="612df4c5-fd87-4a4f-97c1-4dd69c073781" config-ref="HTTP_Listener_config" path="error">
+			<http:error-response statusCode="400" />
+		</http:listener>
+		<logger level="INFO" doc:name="Logger" doc:id="19f81baa-0da0-4dc7-a384-5ff7001ec458" message="#['test fail' ++ now()]"/>
+	</flow>
+	<flow name="deleteFlow1" doc:id="fd3398d9-943f-40fc-82ed-85f9411e0586" >
+		<http:listener doc:name="Listener" doc:id="65e3c58c-5237-4840-8d19-19fdd7673770" config-ref="HTTP_Listener_config" path="error1"/>
+		<logger level="INFO" doc:name="Logger" doc:id="01a923de-e942-4ab5-8296-02c59794083a" message="#['test error' ++ now()]"/>
+		<error-handler >
+			<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="f34da171-42c9-423a-a78d-1dd213ee3a57" >
+				<set-payload value="#['on error propagate']" doc:name="Set Payload" doc:id="a441ad05-e5fe-4967-bf74-54e9309fac51" />
+				<logger level="INFO" doc:name="Logger" doc:id="071b8180-d819-4078-8ba9-e08a2977856d" message="#[payload]"/>
+			</on-error-propagate>
+		</error-handler>
+	</flow>
+	<flow name="deleteFlow2" doc:id="58f27b46-92ef-49e3-9394-8037fad8b2a4" >
+		<http:listener doc:name="Listener" doc:id="547d24ae-7784-443c-8f3e-708e6f3a452d" config-ref="HTTP_Listener_config" path="error2"/>
+		<logger level="INFO" doc:name="Logger" doc:id="ff027f8e-637e-41bc-9160-9da34b0a0f90" message="#['test error' +++ now()]"/>
+		<error-handler >
+			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="78689ea2-787f-4077-95d5-4892a8e7c956" >
+				<set-payload value="#['on error continue']" doc:name="Set Payload" doc:id="77df4a66-38da-4093-ac5c-06cd718ff246" />
+				<logger level="INFO" doc:name="Logger" doc:id="ca2015bf-ce7b-4413-86b8-048cec92487f" message="#[payload]"/>
+			</on-error-continue>
+		</error-handler>
+	</flow>
+</mule>
